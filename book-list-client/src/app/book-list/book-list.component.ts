@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BookType} from "./book.type";
 import {CommonModule} from "@angular/common";
+import {BookService} from "../services/book.service";
 
 @Component({
   selector: 'app-book-list',
@@ -9,10 +10,15 @@ import {CommonModule} from "@angular/common";
   templateUrl: './book-list.component.html',
   styleUrl: './book-list.component.css'
 })
-export class BookListComponent {
- books: BookType[] = [
-   { id: 0, author: "author 1", title: "title 1" },
-   { id: 1, author: "author 2", title: "title 2" },
-   { id: 2, author: "author 3", title: "title 3" },
- ]
+export class BookListComponent implements OnInit {
+  books: BookType[] = []
+
+  constructor(private bookService: BookService) {}
+  ngOnInit() {
+    this.getBooks();
+  }
+
+  getBooks() : void {
+    this.bookService.getBooks().subscribe(books => this.books = books);
+  }
 }
